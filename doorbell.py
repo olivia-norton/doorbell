@@ -28,18 +28,23 @@ class Doorbell:
 
     def process(self):
         if not door_switch.is_pressed and not self.can_open:
-           print('weird')
-           self.buzzer = True
-           buzzer.play(Tone("A4"))
-           time.sleep(2)
-           buzzer.stop()
+            self.buzz()
 
         if self.can_open:
+            print('You can open the door now')
             time.sleep(10)
+            print('Locked!')
+            self.can_open = False
+
+    def buzz(self):
+        buzzer.play(Tone("A4"))
+        time.sleep(2)
+        buzzer.stop()
 
 
     def handleKeyPress(self, key):
         self.password += key
+        print(f'key: {key}')
         if len(self.password) == 4:
             print(f'password: {self.password}')
             self.checkpassword()
