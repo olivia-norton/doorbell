@@ -43,12 +43,15 @@ class Doorbell:
 
 
     def handleKeyPress(self, key):
-        self.password += key
-        print(f'key: {key}')
-        if len(self.password) == 4:
-            print(f'password: {self.password}')
-            self.checkpassword()
-            self.password = ""
+        if not self.can_open:
+            self.password += key
+            buzzer.play(Tone("C4"))
+            time.sleep(0.1)
+            buzzer.stop()
+            if len(self.password) == 4:
+                print(f'password: {self.password}')
+                self.checkpassword()
+                self.password = ""
 
     def checkpassword(self):
         if self.password == '1234':
@@ -56,6 +59,7 @@ class Doorbell:
             print("yay! password accepted")
         else:
             print("bummer, wrong password")
+
 
 doorbell = Doorbell()
 keypad.registerKeyPressHandler(doorbell.handleKeyPress)
